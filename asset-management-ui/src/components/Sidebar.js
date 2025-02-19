@@ -18,6 +18,9 @@ const Sidebar = () => {
         <ListItem button component={Link} to="/mapping">
           <ListItemText primary="Mapping" />
         </ListItem>
+        <ListItem button component={Link} to="/assets">
+          <ListItemText primary="Asset Management" />
+        </ListItem>
       </List>
     </Drawer>
   );

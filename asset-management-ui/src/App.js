@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Configuration from "./pages/Configuration";
 import Scheduling from "./pages/Scheduling";
 import Mapping from "./pages/Mapping";
+import AssetManagement from './pages/AssetManagement';
 import { Box } from "@mui/material";
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
               <Route path="/configuration" element={<Configuration />} />
               <Route path="/scheduling" element={<Scheduling />} />
               <Route path="/mapping" element={<Mapping />} />
+			  <Route path="/assets" element={<AssetManagement />} />
             </Routes>
           </Box>
         </Box>
