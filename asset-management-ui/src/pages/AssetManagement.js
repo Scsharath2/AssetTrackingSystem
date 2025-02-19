@@ -16,7 +16,7 @@ const AssetManagement = () => {
 
     const fetchAssets = async () => {
         try {
-            const response = await axios.get('http://localhost:3833/api/assets');
+            const response = await axios.get('http://localhost:5000/api/assets');
             if (Array.isArray(response.data.records)) {
                 setAssets(response.data.records);
                 setFilteredAssets(response.data.records);
