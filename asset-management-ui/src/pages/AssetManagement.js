@@ -17,11 +17,13 @@ const AssetManagement = () => {
     const fetchAssets = async () => {
         try {
             const response = await axios.get('http://localhost:5000/api/assets');
-            if (Array.isArray(response.data.records)) {
-                setAssets(response.data.records);
-                setFilteredAssets(response.data.records);
-                if (response.data.records.length > 0) {
-                    setFields(Object.keys(response.data.records[0]));
+            console.log("API Response:", response.data); // Debugging log
+            
+            if (response.data && Array.isArray(response.data.data)) {
+                setAssets(response.data.data);
+                setFilteredAssets(response.data.data);
+                if (response.data.data.length > 0) {
+                    setFields(Object.keys(response.data.data[0]));
                 }
             } else {
                 console.error('Unexpected response format:', response.data);
