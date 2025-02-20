@@ -13,11 +13,13 @@ const employeeRoutes = require("./routes/employees");
 const stockRoutes = require("./routes/stocks");
 const assetRoutes = require("./routes/assets");
 const scheduleRoutes = require("./routes/schedules");
+const configRoutes = require("./routes/configuration");
 app.use("/api/models", modelRoutes);
 app.use("/api/locations", locationRoutes);
 app.use("/api/stocks", stockRoutes);
 app.use("/api/assets", assetRoutes);
 app.use("/api/schedules", scheduleRoutes);
+app.use("/api/config", configRoutes);
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
 });

@@ -1,59 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import { Container, TextField, Button, Typography, Paper } from '@mui/material';
 import axios from 'axios';
+import { Container, TextField, Button, Typography, Paper } from '@mui/material';
 
 const Configuration = () => {
-    const [url, setUrl] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [serviceNowUrl, setServiceNowUrl] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     useEffect(() => {
-        // Fetch the existing ServiceNow URL from the backend
-        axios.get('http://localhost:3833/api/configuration')
-            .then(response => {
-                if (response.data && response.data.serviceNowUrl) {
-                    setUrl(response.data.serviceNowUrl);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching configuration:', error);
-            });
+        fetchConfig();
     }, []);
 
-    const handleSave = () => {
-        setLoading(true);
-        axios.post('http://localhost:3833/api/configuration', { serviceNowUrl: url })
-            .then(() => {
-                alert('Configuration saved successfully!');
-            })
-            .catch(error => {
-                console.error('Error saving configuration:', error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+    const fetchConfig = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/api/configuration');
+            if (response.data) {
+                setServiceNowUrl(response.data.serviceNowUrl || '');
+                setUsername(response.data.username || '');
+                setPassword(response.data.password || '');
+            }
+        } catch (error) {
+            console.error('Error fetching configuration:', error);
+        }
+    };
+
+    const handleSave = async () => {
+        try {
+            await axios.post('http://localhost:5000/api/configuration', { serviceNowUrl, username, password });
+            alert('Configuration updated successfully!');
+        } catch (error) {
+            console.error('Error updating configuration:', error);
+            alert('Failed to update configuration.');
+        }
+    };
+
+    const testConnection = async () => {
+        try {
+            const response = await axios.post('http://localhost:5000/api/configuration/test-connection', { serviceNowUrl, username, password });
+            alert(response.data.message);
+        } catch (error) {
+            console.error('Error testing connection:', error);
+            alert('Failed to connect to ServiceNow.');
+        }
     };
 
     return (
-        <Container maxWidth="sm" style={{ marginTop: '2rem' }}>
-            <Paper elevation={3} style={{ padding: '2rem' }}>
-                <Typography variant="h5" gutterBottom>
-                    ServiceNow Configuration
-                </Typography>
-                <TextField
-                    label="ServiceNow URL"
-                    variant="outlined"
-                    fullWidth
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    margin="normal"
-                />
-                <Button 
-                    variant="contained" 
-                    color="primary" 
-                    onClick={handleSave} 
-                    disabled={loading}>
-                    {loading ? 'Saving...' : 'Save Configuration'}
-                </Button>
+        <Container>
+            <Paper elevation={3} style={{ padding: 20, maxWidth: 500, margin: '20px auto' }}>
+                <Typography variant="h5" gutterBottom>ServiceNow Configuration</Typography>
+                <TextField label="ServiceNow URL" fullWidth value={serviceNowUrl} onChange={(e) => setServiceNowUrl(e.target.value)} margin="normal" />
+                <TextField label="Username" fullWidth value={username} onChange={(e) => setUsername(e.target.value)} margin="normal" />
+                <TextField label="Password" type="password" fullWidth value={password} onChange={(e) => setPassword(e.target.value)} margin="normal" />
+                <Button variant="contained" color="primary" onClick={handleSave}>Save</Button>
+                <Button variant="contained" color="secondary" onClick={testConnection} style={{ marginLeft: 10 }}>Test Connection</Button>
             </Paper>
         </Container>
     );
