@@ -7,8 +7,14 @@ import Dashboard from "./pages/Dashboard";
 import Configuration from "./pages/Configuration";
 import Scheduling from "./pages/Scheduling";
 import Mapping from "./pages/Mapping";
-import AssetManagement from './pages/AssetManagement';
 import { Box } from "@mui/material";
+
+// Import ServiceNow Sync Pages
+import AssetsSync from "./pages/ServiceNowSync/AssetsSync";
+import EmployeesSync from "./pages/ServiceNowSync/EmployeesSync";
+import LocationsSync from "./pages/ServiceNowSync/LocationsSync";
+import ModelsSync from "./pages/ServiceNowSync/ModelsSync";
+import StocksSync from "./pages/ServiceNowSync/StocksSync";
 
 const App = () => {
   return (
@@ -23,7 +29,13 @@ const App = () => {
               <Route path="/configuration" element={<Configuration />} />
               <Route path="/scheduling" element={<Scheduling />} />
               <Route path="/mapping" element={<Mapping />} />
-			  <Route path="/assets" element={<AssetManagement />} />
+
+              {/* ServiceNow Sync Section */}
+              <Route path="/servicenow/assets" element={<AssetsSync />} />
+              <Route path="/servicenow/employees" element={<EmployeesSync />} />
+              <Route path="/servicenow/locations" element={<LocationsSync />} />
+              <Route path="/servicenow/models" element={<ModelsSync />} />
+              <Route path="/servicenow/stocks" element={<StocksSync />} />
             </Routes>
           </Box>
         </Box>
